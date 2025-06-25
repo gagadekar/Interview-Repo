@@ -4,24 +4,22 @@ pipeline {
     stages {
         stage('Cloning github repo') {
             steps {
-                git url: 'https://github.com/gagadekar/Interview-Repo.git', branch: 'main'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/gagadekar/Terraform-Automation.git']])
             }
         }
     
         stage ("terraform init") {
             steps {
-                dir('Terraform-Automation-PROJECT-1') {
                 sh ("terraform init -reconfigure") 
             }
         }
-        }
+        
         stage ("terraform Plan") {
             steps {
-                dir('Terraform-Automation-PROJECT-1') {
                 sh ("terraform plan") 
             }
         }
-        }
+
         stage (" Action") {
             steps {
                 echo "Terraform action is --> ${action}"
