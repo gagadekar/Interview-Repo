@@ -36,3 +36,21 @@ resource "aws_subnet" "database_subnet_1" {
     Name = var.database_subnet_tag_1
   }
 }
+#### Public Route Table
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.my-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my-igw.id
+  }
+
+  tags = {
+    Name = "public-rt"
+  }
+}
+#### Associate Public Subnet with Route Table
+resource "aws_route_table_association" "public_rt_assoc" {
+  subnet_id      = aws_subnet.public_subnet_1.id
+  route_table_id = aws_route_table.public_rt.id
+}
